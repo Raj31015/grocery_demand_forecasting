@@ -1,0 +1,12 @@
+[
+  {
+    "mode": "subset_holdout",
+    "rows_used": 300000,
+    "holdout_rows": 60000,
+    "mae_model": 6.233852521540253,
+    "mae_naive_lag1": 8.678580284118652,
+    "mae_naive_lag7": 11.374402046203613,
+    "mae_naive_roll7": 8.354377625558806,
+    "pressure_f1": 0.5628243649276155
+  }
+]

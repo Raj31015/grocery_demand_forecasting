@@ -1,0 +1,12 @@
+{
+  "tree_subset_rows": 300000,
+  "holdout_rows": 60000,
+  "demand_mae": 6.233852521540253,
+  "naive_lag1_mae": 8.678580284118652,
+  "naive_lag7_mae": 11.374402046203613,
+  "naive_roll7_mae": 8.354377625558806,
+  "demand_rmsle": 0.5956160487005282,
+  "stock_pressure_accuracy": 0.7866,
+  "stock_pressure_f1": 0.5628243649276155,
+  "training_mode": "tree_subset"
+}

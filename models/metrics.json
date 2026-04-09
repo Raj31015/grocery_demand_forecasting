@@ -1,0 +1,11 @@
+{
+  "demand_mae": 4.861709609049452,
+  "naive_baseline_mae": 4.5521506119974555,
+  "stock_pressure_accuracy": 0.640632,
+  "stock_pressure_f1": 0.4752955193197215,
+  "average_backtest_mae": null,
+  "rows_used": 2500000,
+  "holdout_rows": 250000,
+  "training_mode": "streaming_full_dataset",
+  "chunk_size": 100000
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "mode": "streaming_holdout",
+    "rows_used": 2500000,
+    "holdout_rows": 250000,
+    "mae_model": 4.861709609049452,
+    "mae_naive_baseline": 4.5521506119974555,
+    "pressure_f1": 0.4752955193197215
+  }
+]
