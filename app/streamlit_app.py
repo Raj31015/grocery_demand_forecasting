@@ -13,9 +13,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from src.config import DEMAND_MODEL_PATH, SKU_PROFILE_PATH, STOCKOUT_MODEL_PATH
-from src.features import make_hashed_features
-from src.train import build_hasher
+from src.config import TREE_DEMAND_MODEL_PATH, TREE_SKU_PROFILE_PATH, TREE_STOCKOUT_MODEL_PATH
 
 
 def clamp(value: float, minimum: float, maximum: float) -> float:
@@ -25,12 +23,12 @@ def clamp(value: float, minimum: float, maximum: float) -> float:
 @st.cache_resource(show_spinner=False)
 def load_model() -> dict:
     """Load trained artifacts and build fast lookup structures for the UI."""
-    if not DEMAND_MODEL_PATH.exists() or not STOCKOUT_MODEL_PATH.exists() or not SKU_PROFILE_PATH.exists():
+    if not TREE_DEMAND_MODEL_PATH.exists() or not TREE_STOCKOUT_MODEL_PATH.exists() or not TREE_SKU_PROFILE_PATH.exists():
         raise FileNotFoundError("Missing trained model artifacts. Run training before opening the app.")
 
-    demand_bundle = joblib.load(DEMAND_MODEL_PATH)
-    stockout_bundle = joblib.load(STOCKOUT_MODEL_PATH)
-    profiles = json.loads(SKU_PROFILE_PATH.read_text())
+    demand_model = joblib.load(TREE_DEMAND_MODEL_PATH)
+    stockout_model = joblib.load(TREE_STOCKOUT_MODEL_PATH)
+    profiles = json.loads(TREE_SKU_PROFILE_PATH.read_text())
     profiles_by_key = {
         (int(profile["store_nbr"]), int(profile["item_nbr"])): profile
         for profile in profiles
@@ -46,10 +44,8 @@ def load_model() -> dict:
         item_mapping[item_nbr] = f"{family.title()} SKU ({item_nbr})"
 
     return {
-        "demand_model": demand_bundle["model"],
-        "stockout_model": stockout_bundle["model"],
-        "scaler": demand_bundle["scaler"],
-        "hasher": build_hasher(),
+        "demand_model": demand_model,
+        "stockout_model": stockout_model,
         "profiles": profiles,
         "profiles_by_key": profiles_by_key,
         "item_mapping": item_mapping,
@@ -143,10 +139,7 @@ def predict(payload: dict, artifacts: dict) -> dict:
         raise ValueError("No trained profile found for the selected store/item combination.")
 
     feature_row, current_inventory = build_feature_row(payload, profile)
-    X = artifacts["scaler"].transform(
-        artifacts["hasher"].transform([make_hashed_features(feature_row)])
-    )
-
+    X = pd.DataFrame([feature_row])
     demand_value = float(np.expm1(artifacts["demand_model"].predict(X)[0]))
     demand_int = max(0, int(round(demand_value)))
     stockout_probability = float(artifacts["stockout_model"].predict_proba(X)[0, 1])
