@@ -14,7 +14,7 @@ from sklearn.metrics import accuracy_score, f1_score, mean_absolute_error
 from sklearn.preprocessing import MaxAbsScaler
 from sklearn.utils.class_weight import compute_class_weight
 
-from config import (
+from src.config import (
     BACKTEST_PATH,
     DEMAND_MODEL_PATH,
     HASH_FEATURE_DIMENSIONS,
@@ -30,8 +30,8 @@ from config import (
     TRAIN_CHUNK_SIZE,
     TRAIN_DATA_PATH,
 )
-from data_utils import iter_train_chunks, load_reference_maps
-from features import make_hashed_features
+from src.data_utils import iter_train_chunks, load_reference_maps
+from src.features import make_hashed_features
 
 
 def build_hasher() -> FeatureHasher:
