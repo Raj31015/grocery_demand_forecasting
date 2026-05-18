@@ -243,7 +243,7 @@ def recommendation_text(stock_pressure: float) -> tuple[str, str]:
 
 st.set_page_config(page_title="Grocery Demand Forecasting", layout="wide")
 st.title("Grocery Demand Forecasting")
-st.write("Interview-ready demand forecasting dashboard for the Favorita retail dataset.")
+
 
 try:
     artifacts = load_model()
